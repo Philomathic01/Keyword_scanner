@@ -1,22 +1,44 @@
-
 import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 import re
 import time
+import os
+import requests
 
-# Define your scraper class
+# -------------------------
+# Dynamic Driver Download
+# -------------------------
+def ensure_chromedriver():
+    driver_url = "https://github.com/Philomathic01/Keyword_scanner/raw/main/chromedriver.exe"
+    driver_path = "chromedriver.exe"
+
+    if not os.path.exists(driver_path):
+        with st.spinner("Downloading ChromeDriver..."):
+            response = requests.get(driver_url)
+            with open(driver_path, "wb") as f:
+                f.write(response.content)
+    return driver_path
+
+# -------------------------
+# Scraper Class
+# -------------------------
 class Scraper:
-
     def __init__(self, url):
         self.url = url
 
     def run_scraper(self):
-        options = webdriver.ChromeOptions()
-        # options.headless = True  # You can uncomment this for headless mode
-        service = Service("https://github.com/Philomathic01/Keyword_scanner/blob/f21f083d871884b83eef9d7f87aaf2501b05bae8/chromedriver.exe")  # Update with your actual path
+        driver_path = ensure_chromedriver()
+
+        options = Options()
+        options.add_argument("--headless")  # Headless for no browser pop-up
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+
+        service = Service(driver_path)
         driver = webdriver.Chrome(service=service, options=options)
 
         driver.get(self.url)
@@ -41,7 +63,8 @@ class Scraper:
 # ------------------------------
 st.title("🕷️ Pharma Keyword Scanner (Body Only)")
 
-url = st.text_input("Enter a website URL:", "Enter URL here...")
+url = st.text_input("Enter a website URL:", "https://www.fda.gov/")
+
 if url and not url.startswith("http"):
     st.warning("Please enter a valid URL starting with 'http://' or 'https://'")
 
@@ -52,9 +75,9 @@ if st.button("Scrape Website"):
 
     # Keyword matching
     target_keywords = [
-        "pharma", "drug", "compliance", "regulatory affairs", "research & development", 
-        "r&d", "oncology", "biotech", "api", "cmo", "cro", "formulation", "manufacturing", 
-        "medic", "vaccine", "genomic", "bioscience", "lifescience", "clinic", 
+        "pharma", "drug", "compliance", "regulatory affairs", "research & development",
+        "r&d", "oncology", "biotech", "api", "cmo", "cro", "formulation", "manufacturing",
+        "medic", "vaccine", "genomic", "bioscience", "lifescience", "clinic",
         "drugs", "nutraceutical", "pharmacy", "supply"
     ]
 
@@ -69,4 +92,5 @@ if st.button("Scrape Website"):
 
     # Save keyword hits
     keyword_df = pd.DataFrame(found_keywords.items(), columns=["Keyword", "Count"])
-    st.download_button("🧪 Download Keyword Hits CSV", data=keyword_df.to_csv(index=False), file_name="keyword_hits.csv", mime="text/csv")
+    st.download_button("🧪 Download Keyword Hits CSV", data=keyword_df.to_csv(index=False),
+                       file_name="keyword_hits.csv", mime="text/csv")
