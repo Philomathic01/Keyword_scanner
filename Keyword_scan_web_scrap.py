@@ -16,7 +16,7 @@ class Scraper:
     def run_scraper(self):
         options = webdriver.ChromeOptions()
         # options.headless = True  # You can uncomment this for headless mode
-        service = Service("E:/Kishan/Deployment/DNS_kishan/chromedriver.exe")  # Update with your actual path
+        service = Service("chromedriver.exe")  # Update with your actual path
         driver = webdriver.Chrome(service=service, options=options)
 
         driver.get(self.url)
