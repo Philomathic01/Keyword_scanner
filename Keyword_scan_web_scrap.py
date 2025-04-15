@@ -16,7 +16,7 @@ class Scraper:
     def run_scraper(self):
         options = webdriver.ChromeOptions()
         # options.headless = True  # You can uncomment this for headless mode
-        service = Service("chromedriver.exe")  # Update with your actual path
+        service = Service("https://github.com/Philomathic01/Keyword_scanner/blob/f21f083d871884b83eef9d7f87aaf2501b05bae8/chromedriver.exe")  # Update with your actual path
         driver = webdriver.Chrome(service=service, options=options)
 
         driver.get(self.url)
