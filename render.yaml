@@ -1,11 +1,10 @@
 services:
   - type: web
-    name: Keyword_scanner
-    runtime: python
-    repo: https://github.com/Philomathic01/Keyword_scanner
+    name: keyword-scanner
+    env: python
+    buildCommand: |
+      apt-get update && \
+      apt-get install -y chromium-browser && \
+      pip install -r requirements.txt
+    startCommand: streamlit run Keyword_scan_web_scrap.py
     plan: free
-    region: oregon
-    buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run Keyword_scan_web_scrap.py --server.port $PORT --server.enableXsrfProtection false
-    autoDeploy: false
-version: "1"
