@@ -13,7 +13,7 @@ import requests
 # Dynamic Driver Download
 # -------------------------
 def ensure_chromedriver():
-    driver_url = "https://github.com/Philomathic01/Keyword_scanner/raw/main/chromedriver.exe"
+    driver_url = "https://github.com/Philomathic01/Keyword_scanner/blob/d5e05419c2593104adf001148fb173d202c88913/chromedriver.exe"
     driver_path = "chromedriver.exe"
 
     if not os.path.exists(driver_path):
