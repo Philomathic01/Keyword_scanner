@@ -1,12 +1,11 @@
-# Exported from Render on 2025-04-15T06:16:41Z
 services:
-- type: web
-  name: Keyword_scanner
-  runtime: python
-  repo: https://github.com/Philomathic01/Keyword_scanner
-  plan: free
-  region: oregon
-  buildCommand: pip install -r requirements.txt
-  startCommand: streamlit run keyword_scanner.py --server.port $PORT --server.enableCORS
-    false
+  - type: web
+    name: Keyword_scanner
+    runtime: python
+    repo: https://github.com/Philomathic01/Keyword_scanner
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run Keyword_scan_web_scrap.py --server.port $PORT --server.enableXsrfProtection false
+    autoDeploy: false
 version: "1"
